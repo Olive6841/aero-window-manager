@@ -16,11 +16,13 @@
 FILE* stream = NULL;
 BOOL firstCrash = TRUE;
 
-DWORD AWM_HandleCrash() {
+DWORD AWM_HandleCrash()
+{
     return 0;
 }
 
-int main() {
+int main()
+{
     FILE* conout;
     TCHAR szLibPath[_MAX_PATH];
     CHAR szSymPath[_MAX_PATH];
@@ -33,11 +35,11 @@ int main() {
     stream = stdout;
     if (!AllocConsole());
     if (freopen_s(
-        &conout,
-        "CONOUT$",
-        "w",
-        stdout)
-        );
+            &conout,
+            "CONOUT$",
+            "w",
+            stdout)
+    );
     fprintf(
         stream,
         "Aero Window Manager\n===================\n"
@@ -52,7 +54,7 @@ int main() {
     wcscat_s(
         szLibPath,
         _MAX_PATH,
-        (TCHAR*)L"\\awmdll.dll"
+        L"\\awmdll.dll"
     );
 
     /*BOOL bResult = FALSE;

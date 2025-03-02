@@ -13,7 +13,6 @@
 
 int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE* phuser32, DWORD addresses[], LPCWSTR symNames[], DWORD addresses_dwmcore[], LPCWSTR symNames_dwmcore[], FILE* stream)
 {
-    int rv;
     CHAR szSymPath[_MAX_PATH];
     ZeroMemory(
         szSymPath,
@@ -31,8 +30,9 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
         SYMBOLS_PATH
     );
 
-    rv = VnDownloadSymbols(NULL, (char*)"C:\\Windows\\system32\\uDWM.dll", szSymPath, _MAX_PATH, stream);
-    if (stream != NULL) {
+    int rv = VnDownloadSymbols(NULL, (char*)"C:\\Windows\\system32\\uDWM.dll", szSymPath, _MAX_PATH, stream);
+    if (stream != NULL)
+    {
         fprintf(
             stream,
             "ERROR %i\n", rv
@@ -99,7 +99,8 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
     );
 
     rv = VnDownloadSymbols(NULL, (char*)"C:\\Windows\\system32\\dwmcore.dll", szSymPath, _MAX_PATH, stream);
-    if (stream != NULL) {
+    if (stream != NULL)
+    {
         fprintf(
             stream,
             "ERROR %i\n", rv
@@ -120,8 +121,9 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
     *phudwm = GetModuleHandleW(L"udwm.dll");
     *phuser32 = GetModuleHandleW(L"user32.dll");
     *phdwmcore = GetModuleHandleW(L"dwmcore.dll");
-    if (!*phudwm || !*phuser32 || !*phdwmcore) {
+    if (!*phudwm || !*phuser32 || !*phdwmcore)
+    {
         return ERR_MODULE;
     }
-	return 0;
+    return 0;
 }

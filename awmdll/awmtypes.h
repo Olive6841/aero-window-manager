@@ -2,7 +2,8 @@
 
 typedef D2D1_RECT_F MilRectF;
 
-typedef struct _TEXTEX {
+typedef struct _TEXTEX
+{
     D2D1_COLOR_F color;
     D2D1_COLOR_F shadowcolor;
     float glowopacity;
@@ -15,23 +16,25 @@ typedef struct _TEXTEX {
     bool isActive; // this is used mainly to check for re-rendering when window state changes
 } TEXTEX;
 
-typedef enum _ACCENT {							// Values passed to SetWindowCompositionAttribute determining the appearance of a window
+typedef enum _ACCENT
+{
+    // Values passed to SetWindowCompositionAttribute determining the appearance of a window
 
-    ACCENT_DISABLED = 0,                        // Use no accent.
-    ACCENT_ENABLE_GRADIENT = 1,					// Use a solid color specified by nColor. This mode ignores the alpha value and is fully opaque.
-    ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,		// Use a tinted transparent overlay. nColor is the tint color.
-    ACCENT_ENABLE_BLURBEHIND = 3,				// Use a tinted blurry overlay. nColor is the tint color.
-    ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,		// Use an aspect similar to Fluent design. nColor is tint color. This mode bugs if the alpha value is 0.
+    ACCENT_DISABLED = 0, // Use no accent.
+    ACCENT_ENABLE_GRADIENT = 1, // Use a solid color specified by nColor. This mode ignores the alpha value and is fully opaque.
+    ACCENT_ENABLE_TRANSPARENTGRADIENT = 2, // Use a tinted transparent overlay. nColor is the tint color.
+    ACCENT_ENABLE_BLURBEHIND = 3, // Use a tinted blurry overlay. nColor is the tint color.
+    ACCENT_ENABLE_ACRYLICBLURBEHIND = 4, // Use an aspect similar to Fluent design. nColor is tint color. This mode bugs if the alpha value is 0.
 
-    //ACCENT_NORMAL = 150							// (Fake value) Emulate regular taskbar appearance
+    //ACCENT_NORMAL = 150						// (Fake value) Emulate regular taskbar appearance
 } ACCENT;
 
-typedef struct _ACCENT_POLICY				// Determines how a window's transparent region will be painted
+typedef struct _ACCENT_POLICY // Determines how a window's transparent region will be painted
 {
-    ACCENT   nAccentState;			    // Appearance
-    int  nFlags;				        // Nobody knows how this value works
-    unsigned int nColor;				// A color in the hex format AABBGGRR
-    int  nAnimationId;			        // Nobody knows how this value works
+    ACCENT nAccentState; // Appearance
+    int nFlags; // Nobody knows how this value works
+    unsigned int nColor; // A color in the hex format AABBGGRR
+    int nAnimationId; // Nobody knows how this value works
 } ACCENT_POLICY;
 
 #define ACCENT_USECOLOR     0x02
@@ -61,28 +64,32 @@ typedef CRenderDataInstruction CPopInstruction;
 
 typedef CBaseTransformProxy CMatrixTransformProxy;
 
-typedef enum _AWM_TEXT_ALIGNMENT {
+typedef enum _AWM_TEXT_ALIGNMENT
+{
     AWM_TEXT_LEFT = 0,
     AWM_TEXT_CENTER_W8 = 1,
     AWM_TEXT_CENTER_ICONBUTTONS = 2,
     AWM_TEXT_CENTER_DULAPPY = 3,
     AWM_TEXT_RIGHT = 4
-}AWM_TEXT_ALIGNMENT;
+} AWM_TEXT_ALIGNMENT;
 
-typedef enum _AWM_BUTTON_ALIGN {
+typedef enum _AWM_BUTTON_ALIGN
+{
     AWM_BTN_ALIGN_TOP = 0,
     AWM_BTN_ALIGN_CENTER = 1,
     AWM_BTN_ALIGN_TBCENTER = 2,
     AWM_BTN_ALIGN_BOTTOM = 3,
     AWM_BTN_ALIGN_FULL = 4
-}AWM_BUTTON_ALIGN;
+} AWM_BUTTON_ALIGN;
 
-typedef enum _AWM_TEXT_VERTICAL_ALIGNMENT {
+typedef enum _AWM_TEXT_VERTICAL_ALIGNMENT
+{
     AWM_TEXT_VALIGN_CENTER = 0,
     AWM_TEXT_VALIGN_TBCENTER = 1
-}AWM_TEXT_VERTICAL_ALIGNMENT;
+} AWM_TEXT_VERTICAL_ALIGNMENT;
 
-struct _awmsettings {
+struct _awmsettings
+{
     // BORDER CORNERS
     int cornerRadiusX = 6;
     int cornerRadiusY = 6;
@@ -126,16 +133,16 @@ struct _awmsettings {
 
     int xBtnInsetAfter = 0;
     int midBtnInsetAfter = 0;
-    int edgeBtnInsetAfter = 0;  // doesn't really do much apart from making the space for the text smaller
+    int edgeBtnInsetAfter = 0; // doesn't really do much apart from making the space for the text smaller
 
     // NC AREA ICON
-    int insetLeftAddNormal = 0;       // a static number added to the inset
-    int insetLeftMulNormal = 1;       // how many times the border size will be taken into account
+    int insetLeftAddNormal = 0; // a static number added to the inset
+    int insetLeftMulNormal = 1; // how many times the border size will be taken into account
     int insetLeftAddMaximized = 0;
     int insetLeftMulMaximized = 1;
 
     // NC AREA TEXT
-    int textInset = 5;       // a static number added to the inset
+    int textInset = 5; // a static number added to the inset
 
     AWM_TEXT_VERTICAL_ALIGNMENT iconTextVerticalAlign = AWM_TEXT_VALIGN_TBCENTER;
 
@@ -180,9 +187,8 @@ struct _awmsettings {
     float textGlowOpacityInactive = 0.4f;
 
     AWM_TEXT_ALIGNMENT textAlignment = AWM_TEXT_LEFT;
-    
+
     D2D1_TEXT_ANTIALIAS_MODE textAntiAlias = D2D1_TEXT_ANTIALIAS_MODE_DEFAULT;
 
     ACCENT accent = ACCENT_DISABLED;
-
 } awmsettings;
