@@ -6,6 +6,9 @@
 #include <atlbase.h>
 #include <atlconv.h>
 #include <awmerrors.h>
+#include <windows.h>
+#include <pathcch.h>
+#include <stdio.h>
 
 // ===========================================================================
 //  LOAD SYMBOLS
@@ -15,28 +18,22 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
 {
     int rv;
     CHAR szSymPath[_MAX_PATH];
-    ZeroMemory(
-        szSymPath,
-        (_MAX_PATH) * sizeof(char)
-    );
-    GetModuleFileNameA(
-        *phModule,
-        szSymPath,
-        _MAX_PATH
-    );
+    ZeroMemory(szSymPath, sizeof(szSymPath));
+    GetModuleFileNameA(*phModule, szSymPath, _MAX_PATH);
     PathRemoveFileSpecA(szSymPath);
-    strcat_s(
-        szSymPath,
-        _MAX_PATH,
-        SYMBOLS_PATH
-    );
+    strcat_s(szSymPath, _MAX_PATH, SYMBOLS_PATH);
+    CHAR windir[MAX_PATH];
+    GetEnvironmentVariableA("windir", windir, sizeof(windir));
 
-    rv = VnDownloadSymbols(NULL, (char*)"C:\\Windows\\system32\\uDWM.dll", szSymPath, _MAX_PATH, stream);
+	// UDWM.DLL
+    CHAR uDWMPath[MAX_PATH];
+    ZeroMemory(uDWMPath, sizeof(uDWMPath));
+    strcpy_s(uDWMPath, sizeof(uDWMPath), windir);
+    strcat_s(uDWMPath, sizeof(uDWMPath), "\\system32\\uDWM.dll");
+
+    rv = VnDownloadSymbols(NULL, uDWMPath, szSymPath, _MAX_PATH, stream);
     if (stream != NULL) {
-        fprintf(
-            stream,
-            "ERROR %i\n", rv
-        );
+        fprintf(stream, "ERROR %i\n", rv);
     }
 
     // WIDE STRING ADDED FOR MIOSSYMBOLS. OLD SYMPATH TO BE REMOVED ONCE LIBVALINET IS PHASED OUT OF THE SYMBOLS
@@ -53,17 +50,10 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
     );*/
 
     // reset the symbol path
-    /*ZeroMemory(
-        szSymPath,
-        (_MAX_PATH) * sizeof(char)
-    );
-    GetModuleFileNameA(
-        hModule,
-        szSymPath,
-        _MAX_PATH
-    );
+    /*ZeroMemory(szSymPath, sizeof(szSymPath));
+    GetModuleFileNameA(*phModule, szSymPath, _MAX_PATH);
     PathRemoveFileSpecA(szSymPath);
-    strcat_s(
+	    strcat_s(
         szSymPath,
         _MAX_PATH,
         SYMBOLS_PATH
@@ -79,31 +69,24 @@ int LoadSymbols(HMODULE* phModule, HMODULE* phudwm, HMODULE* phdwmcore, HMODULE*
     fprintf(
         stream,
         "%i\n", addresses[0]
-    );*/
+    );
+    strcat_s(szSymPath, _MAX_PATH, SYMBOLS_PATH);*/
 
-    // reset the symbol path
-    ZeroMemory(
-        szSymPath,
-        (_MAX_PATH) * sizeof(char)
-    );
-    GetModuleFileNameA(
-        *phModule,
-        szSymPath,
-        _MAX_PATH
-    );
+    // https://www.youtube.com/watch?v=4aOcjAkkJNc
+    ZeroMemory(szSymPath, sizeof(szSymPath));
+    GetModuleFileNameA(*phModule, szSymPath, _MAX_PATH);
     PathRemoveFileSpecA(szSymPath);
-    strcat_s(
-        szSymPath,
-        _MAX_PATH,
-        SYMBOLS_PATH
-    );
+    strcat_s(szSymPath, _MAX_PATH, SYMBOLS_PATH);
+	
+    // DWMCORE.DLL
+    CHAR dwmcorePath[MAX_PATH];
+    ZeroMemory(dwmcorePath, sizeof(dwmcorePath));
+    strcpy_s(dwmcorePath, sizeof(dwmcorePath), windir);
+    strcat_s(dwmcorePath, sizeof(dwmcorePath), "\\system32\\dwmcore.dll");
 
-    rv = VnDownloadSymbols(NULL, (char*)"C:\\Windows\\system32\\dwmcore.dll", szSymPath, _MAX_PATH, stream);
+    rv = VnDownloadSymbols(NULL, dwmcorePath, szSymPath, _MAX_PATH, stream);
     if (stream != NULL) {
-        fprintf(
-            stream,
-            "ERROR %i\n", rv
-        );
+        fprintf(stream, "ERROR %i\n", rv);
     }
 
     szSymPathW = ATL::CA2W(szSymPath);
